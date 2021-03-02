@@ -36,7 +36,6 @@ namespace GestionDeProjet.Controllers
 
             User user = this.UserService.Auth(AnUser.Email, AnUser.Password, _context);
 
-            this._logger.LogInformation(user.Trigramme);
             result = user == null ?
             (IActionResult)Unauthorized(new { Message = "Nom d'utilisateur ou mot de passe incorrect." }) :
             (IActionResult)Ok(user);
