@@ -133,10 +133,31 @@ namespace GestionDeProjet
                         NameRole = "Responsable de projet"
                     });
 
-                    context.RoleUsers.Add(new RoleUsers
+                    context.TypeExigences.Add(new TypeExigence
                     {
-                        NameRole = "Développeur"
+                        NameExigence = "Données"
                     });
+
+                    context.TypeExigences.Add(new TypeExigence
+                    {
+                        NameExigence = "Performances"
+                    });
+
+                    context.TypeExigences.Add(new TypeExigence
+                    {
+                        NameExigence = "Interface utilisateurs"
+                    });
+
+                    context.TypeExigences.Add(new TypeExigence
+                    {
+                        NameExigence = "Qualités"
+                    });
+
+                    context.TypeExigences.Add(new TypeExigence
+                    {
+                        NameExigence = "Services"
+                    });
+
 
                     context.User.Add(new User
                     {
@@ -153,6 +174,16 @@ namespace GestionDeProjet
                         Firstname = "Tristan",
                         Lastname = "Spinnewyn",
                         Email = "tspinnewyn2@esimed.fr",
+                        RoleUserId = 2,
+                        Password = new PasswordHasher<object?>().HashPassword(null, "admin")
+                    });
+
+                    context.User.Add(new User
+                    {
+                        Trigramme = "TSp",
+                        Firstname = "Tristan",
+                        Lastname = "Spinnewyn",
+                        Email = "tspinnewyn3@esimed.fr",
                         RoleUserId = 2,
                         Password = new PasswordHasher<object?>().HashPassword(null, "admin")
                     });

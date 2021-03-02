@@ -16,9 +16,9 @@ namespace GestionDeProjet.DbContextImplementation.Model
 
         public int ProjectId { get; set; }
 
-        public TypeExigence TypeExigence { get; set; }
+        public TypeExigence? TypeExigence { get; set; }
 
-        public int TypeExigenceId { get; set; }
+        public int? TypeExigenceId { get; set; }
 
         public ICollection<TaskExigence> TaskExigence { get; set; } = new HashSet<TaskExigence>();
 

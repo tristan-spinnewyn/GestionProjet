@@ -10,7 +10,7 @@ namespace GestionDeProjet.DbContextImplementation.Model
 
         public DateTime DateLivPrev { get; set; }
 
-        public DateTime DateLivReel { get; set; }
+        public DateTime? DateLivReel { get; set; }
 
         public string JalonName { get; set; }
 

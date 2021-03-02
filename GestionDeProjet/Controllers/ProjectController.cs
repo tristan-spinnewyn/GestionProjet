@@ -47,6 +47,70 @@ namespace GestionDeProjet.Controllers
             return Projects;
         }
 
-        
+        [HttpPost]
+        public IActionResult AddProject([FromBody]Project Project)
+        {
+            IActionResult result;
+            if (!this.IsChief())
+            {
+                result = Unauthorized(new { Message = "Vous n'avez pas les droits." });
+            }
+            else if (Project.NameProject == null || Project.NameProject == "")
+            {
+                result = Unauthorized(new { Message = "Le nom du projet est obligatoire" });
+            }
+            else
+            {
+                try
+                {
+                    this.ProjectRepository.Add(Project);
+                    this.ProjectRepository.SaveChanges();
+                    result = Ok("Insertion effectué");
+                }
+                catch
+                {
+                    result = StatusCode(500);
+                }
+            }
+
+            return result;
+        }
+
+        [HttpPut]
+        public IActionResult UpdateProject([FromBody]Project Project)
+        {
+            IActionResult result;
+            if (!this.IsChief())
+            {
+                result = Unauthorized(new { Message = "Vous n'avez pas les droits." });
+            }
+            else if (Project.NameProject == null || Project.NameProject == "")
+            {
+                result = Unauthorized(new { Message = "Le nom du projet est obligatoire" });
+            }
+            else
+            {
+                Project UpdateProject = this.ProjectRepository.GetById(Project.Id);
+                if(UpdateProject == null)
+                {
+                    result = NotFound(new { Message = "Le projet n'existe pas" });
+                }
+                else
+                {
+                    try
+                    {
+                        this.ProjectRepository.Detach(UpdateProject);
+                        this.ProjectRepository.Update(Project);
+                        this.ProjectRepository.SaveChanges();
+                        result = Ok("Modification effectué");
+                    }
+                    catch
+                    {
+                        result = StatusCode(500);
+                    }
+                }
+            }
+            return result;
+        }
     }
 }

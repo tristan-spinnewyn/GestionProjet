@@ -10,9 +10,9 @@ namespace GestionDeProjet.DbContextImplementation.Model
 
         public string NameProject { get; set; }
 
-        public User User { get; set; }
+        public User? User { get; set; }
 
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
 
         public ICollection<Exigence> Exigences { get; set; } = new HashSet<Exigence>();
 

@@ -42,6 +42,10 @@ namespace GestionDeProjet.Repository
             return _dbSet.Find(id);
         }
 
+        public void Detach(Tentity entity)
+        {
+            _dbContext.Entry(entity).State = EntityState.Detached;
+        }
          public void Update(Tentity entity)
         {
             _dbSet.Attach(entity);

@@ -16,21 +16,21 @@ namespace GestionDeProjet.DbContextImplementation.Model
 
         public DateTime DateStartTaskPrev { get; set; }
 
-        public DateTime DateStartTaskReal { get; set; }
+        public DateTime? DateStartTaskReal { get; set; }
 
-        public DateTime DateEndTask { get; set; }
+        public DateTime? DateEndTask { get; set; }
 
         public Jalon Jalon { get; set; }
 
         public int JalonId { get; set; }
 
-        public User User { get; set; }
+        public User? User { get; set; }
 
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
 
-        public Task TaskDepend { get; set; }
+        public Task? TaskDepend { get; set; }
 
-        public int TaskIdDepend { get; set; }
+        public int? TaskIdDepend { get; set; }
 
         public ICollection<Task> Tasks { get; set; } = new HashSet<Task>();
 
