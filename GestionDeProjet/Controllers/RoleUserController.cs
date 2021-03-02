@@ -9,13 +9,14 @@ using GestionDeProjet.DbContextImplementation.DataContext;
 using GestionDeProjet.DbContextImplementation.Model;
 using GestionDeProjet.Repository;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace GestionDeProjet.Controllers
 {
     [Authorize]
     [ApiController]
     [Route("api/[controller]")]
-    public class RoleUserController : ControllerBase
+    public class RoleUserController : AbstractController
     {
         private readonly DbConfig _context;
         
@@ -34,6 +35,7 @@ namespace GestionDeProjet.Controllers
         public List<RoleUsers> Get()
         {
             _logger.LogInformation("Get All RoleUser");
+            _logger.LogInformation(this.IsChief().ToString());
             return this.RoleRepository.GetAll();
         }
 

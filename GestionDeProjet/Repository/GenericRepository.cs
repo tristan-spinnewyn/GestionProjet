@@ -9,7 +9,7 @@ namespace GestionDeProjet.Repository
 {
     public class GenericRepository<Tentity> : IGenericRepository<Tentity> where Tentity : class
     {
-        DbSet<Tentity> _dbSet;
+        protected DbSet<Tentity> _dbSet;
 
         private DbConfig _dbContext;
 
