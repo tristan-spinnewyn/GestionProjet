@@ -1,0 +1,9 @@
+C:\Users\shin_\Desktop\c#\gestiondeprojet\GestionProjet\GestionDeProjet.DbContextImplementation\bin\Debug\netcoreapp3.1\GestionDeProjet.DbContextImplementation.deps.json
+C:\Users\shin_\Desktop\c#\gestiondeprojet\GestionProjet\GestionDeProjet.DbContextImplementation\bin\Debug\netcoreapp3.1\GestionDeProjet.DbContextImplementation.dll
+C:\Users\shin_\Desktop\c#\gestiondeprojet\GestionProjet\GestionDeProjet.DbContextImplementation\bin\Debug\netcoreapp3.1\GestionDeProjet.DbContextImplementation.pdb
+C:\Users\shin_\Desktop\c#\gestiondeprojet\GestionProjet\GestionDeProjet.DbContextImplementation\obj\Debug\netcoreapp3.1\GestionDeProjet.DbContextImplementation.csprojAssemblyReference.cache
+C:\Users\shin_\Desktop\c#\gestiondeprojet\GestionProjet\GestionDeProjet.DbContextImplementation\obj\Debug\netcoreapp3.1\GestionDeProjet.DbContextImplementation.AssemblyInfoInputs.cache
+C:\Users\shin_\Desktop\c#\gestiondeprojet\GestionProjet\GestionDeProjet.DbContextImplementation\obj\Debug\netcoreapp3.1\GestionDeProjet.DbContextImplementation.AssemblyInfo.cs
+C:\Users\shin_\Desktop\c#\gestiondeprojet\GestionProjet\GestionDeProjet.DbContextImplementation\obj\Debug\netcoreapp3.1\GestionDeProjet.DbContextImplementation.csproj.CoreCompileInputs.cache
+C:\Users\shin_\Desktop\c#\gestiondeprojet\GestionProjet\GestionDeProjet.DbContextImplementation\obj\Debug\netcoreapp3.1\GestionDeProjet.DbContextImplementation.dll
+C:\Users\shin_\Desktop\c#\gestiondeprojet\GestionProjet\GestionDeProjet.DbContextImplementation\obj\Debug\netcoreapp3.1\GestionDeProjet.DbContextImplementation.pdb

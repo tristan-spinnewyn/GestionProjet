@@ -1,0 +1,5 @@
+C:\Users\shin_\Desktop\c#\gestiondeprojet\GestionProjet\GestionDeProjet\obj\Release\netcoreapp3.1\GestionDeProjet.csprojAssemblyReference.cache
+C:\Users\shin_\Desktop\c#\gestiondeprojet\GestionProjet\GestionDeProjet\obj\Release\netcoreapp3.1\GestionDeProjet.AssemblyInfoInputs.cache
+C:\Users\shin_\Desktop\c#\gestiondeprojet\GestionProjet\GestionDeProjet\obj\Release\netcoreapp3.1\GestionDeProjet.AssemblyInfo.cs
+C:\Users\shin_\Desktop\c#\gestiondeprojet\GestionProjet\GestionDeProjet\obj\Release\netcoreapp3.1\GestionDeProjet.csproj.CoreCompileInputs.cache
+C:\Users\shin_\Desktop\c#\gestiondeprojet\GestionProjet\GestionDeProjet\obj\Release\netcoreapp3.1\GestionDeProjet.MvcApplicationPartsAssemblyInfo.cache

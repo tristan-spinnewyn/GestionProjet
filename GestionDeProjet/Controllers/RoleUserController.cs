@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using GestionDeProjet.DbContextImplementation.DataContext;
 using GestionDeProjet.DbContextImplementation.Model;
 using GestionDeProjet.Repository;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GestionDeProjet.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class RoleUserController : ControllerBase

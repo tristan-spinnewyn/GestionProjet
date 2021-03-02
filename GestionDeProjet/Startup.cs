@@ -15,6 +15,10 @@ using GestionDeProjet.DbContextImplementation;
 using GestionDeProjet.DbContextImplementation.DataContext;
 using GestionDeProjet.DbContextImplementation.Model;
 using Microsoft.AspNetCore.Identity;
+using GestionDeProjet.Properties;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace GestionDeProjet
 {
@@ -30,12 +34,42 @@ namespace GestionDeProjet
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            IConfigurationSection section;
+            byte[] cle;
+            Parametres listeParametres;
+
+            // Obtention des paramètres de l'application.
+            section = Configuration.GetSection(nameof(Parametres));
+            services.Configure<Parametres>(section);
+            listeParametres = section.Get<Parametres>();
+            cle = Encoding.ASCII.GetBytes(listeParametres.Cle);
+
             services.AddControllers();
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x =>
+               {
+                   x.RequireHttpsMetadata = false;
+                   x.SaveToken = true;
+                   x.TokenValidationParameters = new TokenValidationParameters
+                   {
+                       ValidateIssuerSigningKey = true,
+                       IssuerSigningKey = new SymmetricSecurityKey(cle),
+                       ValidateIssuer = false,
+                       ValidateAudience = false
+                   };
+               });
+
+            // Activation des services.
+            services.AddCors();
             services.AddMvc();
+            services.AddScoped<IUserService, UserService>();
 
             Tools.AddDefaultConfig(services);
 
@@ -56,7 +90,25 @@ namespace GestionDeProjet
 
             app.UseRouting();
 
+
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+
+            // Configuration CORS.
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+
+            // Activation de l'authentification.
+            app.UseAuthentication();
+
             app.UseAuthorization();
+
+            // Accès aux ressources statiques.
+            app.UseStaticFiles();
 
             app.UseEndpoints(endpoints =>
             {

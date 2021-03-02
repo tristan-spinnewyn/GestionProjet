@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace GestionDeProjet.DbContextImplementation.Model
@@ -27,6 +28,9 @@ namespace GestionDeProjet.DbContextImplementation.Model
         public ICollection<Jalon> Jalons { get; set; } = new HashSet<Jalon>();
 
         public ICollection<Task> Tasks { get; set; } = new HashSet<Task>();
+        
+        [NotMapped]
+        public virtual string Token { get; set; }
 
     }
 }
