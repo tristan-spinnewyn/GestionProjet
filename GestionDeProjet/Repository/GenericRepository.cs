@@ -11,7 +11,7 @@ namespace GestionDeProjet.Repository
     {
         protected DbSet<Tentity> _dbSet;
 
-        private DbConfig _dbContext;
+        protected DbConfig _dbContext;
 
         public GenericRepository(DbConfig dbContext)
         {

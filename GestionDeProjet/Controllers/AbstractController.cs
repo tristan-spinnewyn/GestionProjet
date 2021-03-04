@@ -24,7 +24,7 @@ namespace GestionDeProjet.Controllers
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
 
-            if(identity != null)
+            if (identity != null)
             {
                 return Int32.Parse(identity.FindFirst("id").Value);
             }

@@ -23,11 +23,14 @@ namespace GestionDeProjet.Controllers
 
         private ProjectRepository ProjectRepository;
 
+        private ExigenceRepository ExigenceRepository;
+
         public ProjectController(ILogger<ProjectController> logger, DbConfig context)
         {
             _logger = logger;
             _context = context;
             ProjectRepository = new ProjectRepository(_context);
+            ExigenceRepository = new ExigenceRepository(_context);
         }
         [HttpGet]
         public List<Project> Index()
@@ -118,10 +121,32 @@ namespace GestionDeProjet.Controllers
         {
             IActionResult result;
             Project Project = ProjectRepository.GetById(id);
-
+            //on vérifie que l'utilisateur n'est pas un chef et que le projet lui est bien assigné
+            if(this.GetId() != Project.UserId && !this.IsChief())
+            {
+                Project = null;
+            }
             result = Project == null ?
-            (IActionResult)NotFound(new { Message = "Utilisateur inexistant !" }) :
+            (IActionResult)NotFound(new { Message = "Project inexistant ou vous n'avez pas le droit d'y accéder!" }) :
             (IActionResult)Ok(Project);
+
+            return result;
+        }
+
+        [HttpGet("{id}/exigence")]
+        public IActionResult getExigence(int id)
+        {
+            IActionResult result;
+            Project Project = ProjectRepository.GetById(id);
+            //on vérifie que l'utilisateur n'est pas un chef et que le projet lui est bien assigné
+            if ((Project == null) && (this.GetId() != Project.UserId && !this.IsChief()))
+            {
+                result = NotFound(new { Message = "Project inexistant ou vous n'avez pas le droit d'y accéder!" });
+            }
+            else
+            {
+                result = Ok(this.ExigenceRepository.GetExigencesForProject(id));
+            }
 
             return result;
         }

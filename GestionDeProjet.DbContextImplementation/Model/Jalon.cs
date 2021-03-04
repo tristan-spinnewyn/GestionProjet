@@ -8,7 +8,7 @@ namespace GestionDeProjet.DbContextImplementation.Model
     {
         public int Id { get; set; }
 
-        public DateTime DateLivPrev { get; set; }
+        public DateTime? DateLivPrev { get; set; }
 
         public DateTime? DateLivReel { get; set; }
 
