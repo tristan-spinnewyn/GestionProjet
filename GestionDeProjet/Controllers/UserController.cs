@@ -31,6 +31,19 @@ namespace GestionDeProjet.Controllers
         {
             return UserRepository.GetAll();
         }
+
+        [HttpGet("{id}")]
+        public IActionResult getById(int id)
+        {
+            IActionResult result;
+            User user = UserRepository.GetById(id);
+
+            result = user == null ?
+            (IActionResult)NotFound(new { Message = "Utilisateur inexistant !" }) :
+            (IActionResult)Ok(user);
+
+            return result;
+        }
        
     }
 }

@@ -65,7 +65,7 @@ namespace GestionDeProjet.Controllers
                 {
                     this.ProjectRepository.Add(Project);
                     this.ProjectRepository.SaveChanges();
-                    result = Ok("Insertion effectué");
+                    result = Ok(new { Message = "Insertion effectué" });
                 }
                 catch
                 {
@@ -102,7 +102,7 @@ namespace GestionDeProjet.Controllers
                         this.ProjectRepository.Detach(UpdateProject);
                         this.ProjectRepository.Update(Project);
                         this.ProjectRepository.SaveChanges();
-                        result = Ok("Modification effectué");
+                        result = Ok(new { Message = "Modification effectué" });
                     }
                     catch
                     {
@@ -110,6 +110,19 @@ namespace GestionDeProjet.Controllers
                     }
                 }
             }
+            return result;
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult getById(int id)
+        {
+            IActionResult result;
+            Project Project = ProjectRepository.GetById(id);
+
+            result = Project == null ?
+            (IActionResult)NotFound(new { Message = "Utilisateur inexistant !" }) :
+            (IActionResult)Ok(Project);
+
             return result;
         }
     }
