@@ -170,7 +170,7 @@ namespace GestionDeProjet
                     });
                     context.User.Add(new User
                     {
-                        Trigramme = "TSp",
+                        Trigramme = "TS2",
                         Firstname = "Tristan",
                         Lastname = "Spinnewyn",
                         Email = "tspinnewyn2@esimed.fr",
@@ -180,7 +180,7 @@ namespace GestionDeProjet
 
                     context.User.Add(new User
                     {
-                        Trigramme = "TSp",
+                        Trigramme = "TS3",
                         Firstname = "Tristan",
                         Lastname = "Spinnewyn",
                         Email = "tspinnewyn3@esimed.fr",

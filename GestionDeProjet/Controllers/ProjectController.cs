@@ -25,12 +25,15 @@ namespace GestionDeProjet.Controllers
 
         private ExigenceRepository ExigenceRepository;
 
+        private JalonRepository JalonRepository;
+
         public ProjectController(ILogger<ProjectController> logger, DbConfig context)
         {
             _logger = logger;
             _context = context;
             ProjectRepository = new ProjectRepository(_context);
             ExigenceRepository = new ExigenceRepository(_context);
+            JalonRepository = new JalonRepository(_context);
         }
         [HttpGet]
         public List<Project> Index()
@@ -146,6 +149,24 @@ namespace GestionDeProjet.Controllers
             else
             {
                 result = Ok(this.ExigenceRepository.GetExigencesForProject(id));
+            }
+
+            return result;
+        }
+
+        [HttpGet("{id}/jalon")]
+        public IActionResult getJalon(int id)
+        {
+            IActionResult result;
+            Project Project = ProjectRepository.GetById(id);
+            //on vérifie que l'utilisateur n'est pas un chef et que le projet lui est bien assigné
+            if ((Project == null) && (this.GetId() != Project.UserId && !this.IsChief()))
+            {
+                result = NotFound(new { Message = "Project inexistant ou vous n'avez pas le droit d'y accéder!" });
+            }
+            else
+            {
+                result = Ok(this.JalonRepository.GetJalonForProject(id));
             }
 
             return result;
