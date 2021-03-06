@@ -96,7 +96,7 @@ namespace GestionDeProjet.Controllers
         }
 
         [HttpPut]
-        public IActionResult UpdateExigence([FromBody] Jalon Jalon)
+        public IActionResult UpdateJalon([FromBody] Jalon Jalon)
         {
             IActionResult result;
             Project Project = ProjectRepository.GetById(Jalon.ProjectId);
@@ -136,5 +136,49 @@ namespace GestionDeProjet.Controllers
             }
             return result;
         }
+
+        [HttpPut("livraison")]
+        public IActionResult JalonLivraison([FromBody]Jalon Jalon)
+        {
+            IActionResult result;
+            Project Project = ProjectRepository.GetById(Jalon.ProjectId);
+            if (Project != null)
+            {
+                if (this.GetId() != Project.UserId && !this.IsChief())
+                {
+                    result = Unauthorized(new { Message = "Vous n'avez pas le droit d'accéder à la ressource demander!" });
+                }
+                else
+                {
+                    Jalon UpdateJalon = this.JalonRepository.GetById(Jalon.Id);
+                    if (UpdateJalon == null)
+                    {
+                        result = NotFound(new { Message = "L'exigence n'existe pas" });
+                    }
+                    else
+                    {
+                        try
+                        {
+                            this.JalonRepository.Detach(UpdateJalon);
+                            this.ProjectRepository.Detach(Project);
+                            Jalon.DateLivReel = DateTime.Now;
+                            this.JalonRepository.Update(Jalon);
+                            this.JalonRepository.SaveChanges();
+                            result = Ok(new { Message = "Livraison effectué" });
+                        }
+                        catch
+                        {
+                            result = StatusCode(500);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                result = NotFound(new { Message = "Le projet n'éxiste pas" });
+            }
+            return result;
+        }
+
     }
 }
