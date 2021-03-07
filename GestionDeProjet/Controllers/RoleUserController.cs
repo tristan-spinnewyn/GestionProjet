@@ -16,18 +16,13 @@ namespace GestionDeProjet.Controllers
     [Authorize]
     [ApiController]
     [Route("api/[controller]")]
-    public class RoleUserController : AbstractController
+    public class RoleUserController : AbstractController<RoleUserController>
     {
-        private readonly DbConfig _context;
-        
-        private readonly ILogger<RoleUserController> _logger;
 
         private RoleRepository RoleRepository;
 
-        public RoleUserController(ILogger<RoleUserController> logger,DbConfig context)
+        public RoleUserController(ILogger<RoleUserController> logger,DbConfig context) : base (logger,context)
         {
-            _logger = logger;
-            _context = context;
             RoleRepository = new RoleRepository(_context);
         }
 

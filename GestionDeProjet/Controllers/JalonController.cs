@@ -15,21 +15,11 @@ namespace GestionDeProjet.Controllers
     [Authorize]
     [ApiController]
     [Route("api/[controller]")]
-    public class JalonController : AbstractController
+    public class JalonController : AbstractController<JalonController>
     {
-        private readonly DbConfig _context;
 
-        private readonly ILogger<JalonController> _logger;
-
-        private JalonRepository JalonRepository;
-
-        private ProjectRepository ProjectRepository;
-        public JalonController(ILogger<JalonController> logger, DbConfig context)
+        public JalonController(ILogger<JalonController> logger, DbConfig context) : base(logger,context)
         {
-            _logger = logger;
-            _context = context;
-            JalonRepository = new JalonRepository(_context);
-            ProjectRepository = new ProjectRepository(_context);
         }
 
         [HttpGet("{id}")]
@@ -41,7 +31,7 @@ namespace GestionDeProjet.Controllers
             {
                 Project Project = ProjectRepository.GetById(Jalon.ProjectId);
                 //on vérifie que l'utilisateur n'est pas un chef et que le projet lui est bien assigné avant de lui transmettre l'exigence
-                if (this.GetId() != Project.UserId && !this.IsChief())
+                if (!this.Access(Project.Id))
                 {
                     result = NotFound(new { Message = "Vous n'avez pas le droit d'accéder à la ressource demander!" });
                 }
@@ -111,7 +101,7 @@ namespace GestionDeProjet.Controllers
                     Jalon UpdateJalon = this.JalonRepository.GetById(Jalon.Id);
                     if (UpdateJalon == null)
                     {
-                        result = NotFound(new { Message = "L'exigence n'existe pas" });
+                        result = NotFound(new { Message = "Le jalon n'existe pas" });
                     }
                     else
                     {
@@ -144,7 +134,7 @@ namespace GestionDeProjet.Controllers
             Project Project = ProjectRepository.GetById(Jalon.ProjectId);
             if (Project != null)
             {
-                if (this.GetId() != Project.UserId && !this.IsChief())
+                if (!this.Access(Project.Id))
                 {
                     result = Unauthorized(new { Message = "Vous n'avez pas le droit d'accéder à la ressource demander!" });
                 }
@@ -153,7 +143,7 @@ namespace GestionDeProjet.Controllers
                     Jalon UpdateJalon = this.JalonRepository.GetById(Jalon.Id);
                     if (UpdateJalon == null)
                     {
-                        result = NotFound(new { Message = "L'exigence n'existe pas" });
+                        result = NotFound(new { Message = "Le jalon n'existe pas" });
                     }
                     else
                     {
@@ -180,5 +170,32 @@ namespace GestionDeProjet.Controllers
             return result;
         }
 
+        [HttpGet("{id}/task")]
+        public IActionResult GetTask(int id)
+        {
+            IActionResult result;
+            Jalon Jalon = JalonRepository.GetById(id);
+            if(Jalon == null)
+            {
+                result = NotFound(new { Message = "Project inexistant ou vous n'avez pas le droit d'y accéder!" });
+            }
+            else
+            {
+                Project Project = ProjectRepository.GetById(Jalon.ProjectId);
+                //on vérifie que l'utilisateur peut effectuvé l'action
+
+                if (!this.Access(Project.Id))
+                {
+                    result = Unauthorized(new { Message = "Project inexistant ou vous n'avez pas le droit d'y accéder!" });
+                }
+                else
+                {
+                    result = Ok(this.TaskRepository.GetTaskForJalon(id));
+                }
+            }
+            
+
+            return result;
+        }
     }
 }

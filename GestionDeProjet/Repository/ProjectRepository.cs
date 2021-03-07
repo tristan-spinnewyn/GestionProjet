@@ -12,10 +12,5 @@ namespace GestionDeProjet.Repository
         public ProjectRepository(DbConfig db) : base(db)
         {
         }
-
-        public List<Project> GetProjectAssign(int UserId)
-        {
-            return this._dbSet.Where(p => p.UserId == UserId).ToList();
-        }
     }
 }

@@ -14,19 +14,13 @@ namespace GestionDeProjet.Controllers
     [Authorize]
     [ApiController]
     [Route("api/[controller]")]
-    public class TypeExigenceController : AbstractController
+    public class TypeExigenceController : AbstractController<TypeExigenceController>
     {
-
-        private readonly DbConfig _context;
-
-        private readonly ILogger<TypeExigenceController> _logger;
 
         private TypeExigenceRepository TypeExigenceRepository;
 
-        public TypeExigenceController(ILogger<TypeExigenceController> logger, DbConfig context)
+        public TypeExigenceController(ILogger<TypeExigenceController> logger, DbConfig context) : base(logger,context)
         {
-            _logger = logger;
-            _context = context;
             TypeExigenceRepository = new TypeExigenceRepository(_context);
         }
 

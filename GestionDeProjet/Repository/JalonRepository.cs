@@ -19,5 +19,11 @@ namespace GestionDeProjet.Repository
         {
             return this._dbSet.Where(e => e.ProjectId == id).ToList();
         }
+
+        public Jalon getForUser(int projectId,int userId)
+        {
+            return this._dbSet.Where(e => (e.ProjectId == projectId) && (e.UserId == userId)).First();
+
+        }
     }
 }

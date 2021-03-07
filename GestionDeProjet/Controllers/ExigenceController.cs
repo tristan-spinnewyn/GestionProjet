@@ -14,23 +14,11 @@ namespace GestionDeProjet.Controllers
     [Authorize]
     [ApiController]
     [Route("api/[controller]")]
-    public class ExigenceController : AbstractController
+    public class ExigenceController : AbstractController<ExigenceController>
     {
-        private readonly DbConfig _context;
-
-        private readonly ILogger<ExigenceController> _logger;
-
-        private ExigenceRepository ExigenceRepository;
-
-        private ProjectRepository ProjectRepository;
-
-
-        public ExigenceController(ILogger<ExigenceController> logger, DbConfig context)
+        public ExigenceController(ILogger<ExigenceController> logger, DbConfig context) : base(logger,context)
         {
-            _logger = logger;
-            _context = context;
-            ExigenceRepository = new ExigenceRepository(_context);
-            ProjectRepository = new ProjectRepository(_context);
+            
         }
         [HttpGet("{id}")]
         public IActionResult Get(int id)
@@ -41,7 +29,7 @@ namespace GestionDeProjet.Controllers
             {
                 Project Project = ProjectRepository.GetById(Exigence.ProjectId);
                 //on vérifie que l'utilisateur n'est pas un chef et que le projet lui est bien assigné avant de lui transmettre l'exigence
-                if (this.GetId() != Project.UserId && !this.IsChief())
+                if (!this.Access(Project.Id))
                 {
                     result = NotFound(new { Message = "Vous n'avez pas le droit d'accéder à la ressource demander!" });
                 }
@@ -67,8 +55,8 @@ namespace GestionDeProjet.Controllers
             Project Project = ProjectRepository.GetById(Exigence.ProjectId);
             if(Project != null)
             {
-                //on vérifie que l'utilisateur n'est pas un chef et que le projet lui est bien assigné avant de lui transmettre l'exigence
-                if (this.GetId() != Project.UserId && !this.IsChief())
+                //on vérifie que l'utilisateur n'est pas un chef et qu'il n'a pas accés a une des ressource du projet
+                if (!this.Access(Project.Id))
                 {
                     result = Unauthorized(new { Message = "Vous n'avez pas le droit d'accéder à la ressource demander!" });
                 }
@@ -101,7 +89,7 @@ namespace GestionDeProjet.Controllers
             Project Project = ProjectRepository.GetById(Exigence.ProjectId);
             if (Project != null)
             {
-                if (this.GetId() != Project.UserId && !this.IsChief())
+                if (!this.Access(Project.Id))
                 {
                     result = Unauthorized(new { Message = "Vous n'avez pas le droit d'accéder à la ressource demander!" });
                 }

@@ -14,43 +14,38 @@ namespace GestionDeProjet.Controllers
     [Authorize]
     [ApiController]
     [Route("api/[controller]")]
-    public class ProjectController : AbstractController
+    public class ProjectController : AbstractController<ProjectController>
     {
 
-        private readonly DbConfig _context;
-
-        private readonly ILogger<ProjectController> _logger;
-
-        private ProjectRepository ProjectRepository;
-
-        private ExigenceRepository ExigenceRepository;
-
-        private JalonRepository JalonRepository;
-
-        public ProjectController(ILogger<ProjectController> logger, DbConfig context)
+        public ProjectController(ILogger<ProjectController> logger, DbConfig context) :base(logger,context)
         {
-            _logger = logger;
-            _context = context;
-            ProjectRepository = new ProjectRepository(_context);
-            ExigenceRepository = new ExigenceRepository(_context);
-            JalonRepository = new JalonRepository(_context);
+
         }
+
         [HttpGet]
         public List<Project> Index()
         {
 
-            List<Project> Projects;
+            List<Project> Projects = this.ProjectRepository.GetAll();
+            List<Project> ProjectsAccess = new List<Project>();
             if (this.IsChief())
             {
-                Projects = this.ProjectRepository.GetAll();
+                return Projects;
             }
             else
             {
-                Projects = this.ProjectRepository.GetProjectAssign(this.GetId());
+                
+                foreach(Project Project in Projects)
+                {
+                    if (this.Access(Project.Id))
+                    {
+                        ProjectsAccess.Add(Project);
+                    }
+                }
+
+                return ProjectsAccess;
             }
 
-
-            return Projects;
         }
 
         [HttpPost]
@@ -125,7 +120,7 @@ namespace GestionDeProjet.Controllers
             IActionResult result;
             Project Project = ProjectRepository.GetById(id);
             //on vérifie que l'utilisateur n'est pas un chef et que le projet lui est bien assigné
-            if(this.GetId() != Project.UserId && !this.IsChief())
+            if((!this.Access(Project.Id)))
             {
                 Project = null;
             }
@@ -142,7 +137,7 @@ namespace GestionDeProjet.Controllers
             IActionResult result;
             Project Project = ProjectRepository.GetById(id);
             //on vérifie que l'utilisateur n'est pas un chef et que le projet lui est bien assigné
-            if ((Project == null) && (this.GetId() != Project.UserId && !this.IsChief()))
+            if ((Project == null) && (!this.Access(Project.Id)))
             {
                 result = NotFound(new { Message = "Project inexistant ou vous n'avez pas le droit d'y accéder!" });
             }
@@ -160,7 +155,7 @@ namespace GestionDeProjet.Controllers
             IActionResult result;
             Project Project = ProjectRepository.GetById(id);
             //on vérifie que l'utilisateur n'est pas un chef et que le projet lui est bien assigné
-            if ((Project == null) && (this.GetId() != Project.UserId && !this.IsChief()))
+            if ((Project == null) && (!this.Access(Project.Id)))
             {
                 result = NotFound(new { Message = "Project inexistant ou vous n'avez pas le droit d'y accéder!" });
             }
