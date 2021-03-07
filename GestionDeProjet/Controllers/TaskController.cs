@@ -17,10 +17,11 @@ namespace GestionDeProjet.Controllers
     [Route("api/[controller]")]
     public class TaskController : AbstractController<TaskController>
     {
+        private TaskExigenceRepository TaskExigenceRepository;
 
         public TaskController(ILogger<TaskController> logger, DbConfig context) : base(logger,context)
         {
-
+            this.TaskExigenceRepository = new TaskExigenceRepository(context);
         }
 
         [HttpGet("{id}")]
@@ -250,6 +251,11 @@ namespace GestionDeProjet.Controllers
             return result;
         }
 
+        [HttpGet("{id}/exigence")]
+        public List<TaskExigence> getExigenceLst(int id)
+        {
+            return this.TaskExigenceRepository.GetByTask(id);
+        }
         private int GetProjectId(int idJalon)
         {
             Jalon Jalon = JalonRepository.GetById(idJalon);
