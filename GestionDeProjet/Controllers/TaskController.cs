@@ -109,17 +109,17 @@ namespace GestionDeProjet.Controllers
                     }
                     else
                     {
-                        //try
-                        //{
+                        try
+                        {
                             this.TaskRepository.Detach(UpdateTask);
                             this.TaskRepository.Update(Task);
                             this.TaskRepository.SaveChanges();
                             result = Ok(new { Message = "Modification effectué" });
-                        /*}
+                        }
                         catch
                         {
                             result = StatusCode(500);
-                        }*/
+                        }
                     }
                 }
                 else
@@ -127,6 +127,121 @@ namespace GestionDeProjet.Controllers
                     result = Unauthorized();
                 }
        
+            }
+            else
+            {
+                result = Unauthorized(new { Message = "Le projet n'éxiste pas" });
+            }
+            return result;
+        }
+
+        [HttpPut("start")]
+        public IActionResult Start([FromBody] Task Task)
+        {
+            IActionResult result;
+            var projectId = this.GetProjectId(Task.JalonId);
+
+            if (projectId != 0)
+            {
+                if (this.Access(projectId))
+                {
+                    Task UpdateTask = this.TaskRepository.GetById(Task.Id);
+                    if (UpdateTask == null)
+                    {
+                        result = NotFound(new { Message = "La tache n'existe pas" });
+                    }
+                    else
+                    {
+                        try
+                        {
+                            this.TaskRepository.Detach(UpdateTask);
+                            if (Task.TaskIdDepend != null)
+                            {
+                                Task DependTask = this.TaskRepository.GetById(Task.TaskIdDepend.GetValueOrDefault());
+                                if(DependTask.DateEndTask != null)
+                                {
+                                    Task.DateStartTaskReal = DateTime.Now;
+                                    this.TaskRepository.Update(Task);
+                                    this.TaskRepository.SaveChanges();
+                                    result = Ok(new { Message = "Tache commencé" });
+                                }
+                                else
+                                {
+                                    result = StatusCode(401);
+                                }
+                            }
+                            else
+                            {
+                                Task.DateStartTaskReal = DateTime.Now;
+                                this.TaskRepository.Update(Task);
+                                this.TaskRepository.SaveChanges();
+                                result = Ok(new { Message = "Tache commencé" });
+                            }
+                            
+                        }
+                        catch
+                        {
+                            result = StatusCode(500);
+                        }
+                    }
+                }
+                else
+                {
+                    result = Unauthorized();
+                }
+
+            }
+            else
+            {
+                result = Unauthorized(new { Message = "Le projet n'éxiste pas" });
+            }
+            return result;
+        }
+
+        [HttpPut("end")]
+        public IActionResult End([FromBody] Task Task)
+        {
+            IActionResult result;
+            var projectId = this.GetProjectId(Task.JalonId);
+
+            if (projectId != 0)
+            {
+                if (this.Access(projectId))
+                {
+                    Task UpdateTask = this.TaskRepository.GetById(Task.Id);
+                    if (UpdateTask == null)
+                    {
+                        result = NotFound(new { Message = "La tache n'existe pas" });
+                    }
+                    else
+                    {
+                        try
+                        {
+                            this.TaskRepository.Detach(UpdateTask);
+                            if(Task.DateStartTaskReal != null)
+                            {
+                                Task.DateEndTask = DateTime.Now;
+                                this.TaskRepository.Update(Task);
+                                this.TaskRepository.SaveChanges();
+                                result = Ok(new { Message = "Tache fini" });
+                            }
+                            else
+                            {
+                                result = Unauthorized();
+                            }
+                            
+                        }
+                        catch
+                        {
+                            result = StatusCode(500);
+                        }
+                    }
+                }
+                else
+                {
+                    result = Unauthorized();
+                }
+
             }
             else
             {
