@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Task = GestionDeProjet.DbContextImplementation.Model.Task;
 
 namespace GestionDeProjet.Controllers
 {
@@ -161,7 +162,37 @@ namespace GestionDeProjet.Controllers
             }
             else
             {
-                result = Ok(this.JalonRepository.GetJalonForProject(id));
+                List<Jalon> Jalons = new List<Jalon>();
+                foreach(Jalon Jalon in this.JalonRepository.GetJalonForProject(id))
+                {
+                    int Pourcentage = 0;
+                    int Nb = 0;
+                    foreach(Task Task in this.TaskRepository.GetTaskForJalon(Jalon.Id))
+                    {
+                        if(Task.DateStartTaskReal != null)
+                        {
+                            if(Task.DateEndTask != null)
+                            {
+                                Pourcentage = Pourcentage + 100;
+                            }
+                            else
+                            {
+                                Pourcentage = Pourcentage + 50;
+                            }
+                            
+                        }
+                        Nb = Nb + 1;
+                    }
+                    if(Nb != 0)
+                    {
+                        Pourcentage = Pourcentage / Nb;
+                    }
+                    Jalon.PourcentageFinish = Pourcentage;
+
+                    Jalons.Add(Jalon);
+                }
+
+                result = Ok(Jalons);
             }
 
             return result;
