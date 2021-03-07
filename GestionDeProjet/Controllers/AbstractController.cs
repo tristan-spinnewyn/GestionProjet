@@ -85,6 +85,9 @@ namespace GestionDeProjet.Controllers
                             {
                                 trouver = true;
                             }
+
+                            TaskRepository.Detach(task);
+                            JalonRepository.Detach(aJalon);
                         }
 
                         if (!trouver)
@@ -93,6 +96,8 @@ namespace GestionDeProjet.Controllers
                         }
                     }
                 }
+
+                ProjectRepository.Detach(Project);
             }
             
             return result;

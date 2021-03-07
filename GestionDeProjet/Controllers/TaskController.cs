@@ -109,17 +109,17 @@ namespace GestionDeProjet.Controllers
                     }
                     else
                     {
-                        try
-                        {
+                        //try
+                        //{
                             this.TaskRepository.Detach(UpdateTask);
                             this.TaskRepository.Update(Task);
                             this.TaskRepository.SaveChanges();
                             result = Ok(new { Message = "Modification effectué" });
-                        }
+                        /*}
                         catch
                         {
                             result = StatusCode(500);
-                        }
+                        }*/
                     }
                 }
                 else
@@ -145,8 +145,10 @@ namespace GestionDeProjet.Controllers
                 if(Project != null)
                 {
                     result = Project.Id;
+                    ProjectRepository.Detach(Project);
                 }
             }
+            JalonRepository.Detach(Jalon);
 
             return result;
         }
